@@ -8,21 +8,22 @@ jobs:
     steps:
       - name: Download Linux WHL Bundle
         run: |
-          # 1. 下载 Torch 2.11.0
-          wget https://pytorch.org
+          # 1. 下载 Torch 2.11.0 (注意加上 -O 确保文件名正确)
+          wget -O torch-2.11.0+cu130-cp311-cp311-linux_x86_64.whl https://pytorch.org
           
           # 2. 下载 Torchaudio 2.11.0
-          wget https://pytorch.org
+          wget -O torchaudio-2.11.0+cu130-cp311-cp311-linux_x86_64.whl https://pytorch.org
           
           # 3. 下载 Torchvision 0.26.0
-          wget https://pytorch.org
+          wget -O torchvision-0.26.0+cu130-cp311-cp311-linux_x86_64.whl https://pytorch.org
+          
+          # 列出文件确认下载成功
+          ls -lh *.whl
 
       - name: Upload Bundle to Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: pytorch-linux-bundle
-          path: |
-            torch-*.whl
-            torchaudio-*.whl
-            torchvision-*.whl
+          # 明确路径模式，确保匹配当前目录下的 whl
+          path: "./*.whl"
           retention-days: 1
