@@ -15,13 +15,13 @@ jobs:
           echo "Starting downloads..."
 
           # 1. 下载 Torch (注意：域名/路径/文件名 之间都有 / 隔开)
-          wget --user-agent="$UA" -O torch-2.11.0+cu130-cp311-cp311-linux_x86_64.whl "https://pytorch.org/torch-2.11.0%2Bcu130-cp311-cp311-linux_x86_64.whl"
+          wget --user-agent="$UA" -O torch-2.11.0+cu130-cp311-cp311-linux_x86_64.whl "https://download.pytorch.org/torch-2.11.0%2Bcu130-cp311-cp311-linux_x86_64.whl"
           
           # 2. 下载 Torchaudio
-          wget --user-agent="$UA" -O torchaudio-2.11.0+cu130-cp311-cp311-linux_x86_64.whl "https://pytorch.org/torchaudio-2.11.0%2Bcu130-cp311-cp311-linux_x86_64.whl"
+          wget --user-agent="$UA" -O torchaudio-2.11.0+cu130-cp311-cp311-linux_x86_64.whl "https://download.pytorch.org/torchaudio-2.11.0%2Bcu130-cp311-cp311-linux_x86_64.whl"
           
           # 3. 下载 Torchvision
-          wget --user-agent="$UA" -O torchvision-0.26.0+cu130-cp311-cp311-linux_x86_64.whl "https://pytorch.org/torchvision-0.26.0%2Bcu130-cp311-cp311-linux_x86_64.whl"
+          wget --user-agent="$UA" -O torchvision-0.26.0+cu130-cp311-cp311-linux_x86_64.whl "https://download.pytorch.org/torchvision-0.26.0%2Bcu130-cp311-cp311-linux_x86_64.whl"
 
           echo "Verifying file sizes..."
           ls -lh *.whl
