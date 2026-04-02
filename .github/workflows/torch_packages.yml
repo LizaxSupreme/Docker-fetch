@@ -1,0 +1,31 @@
+name: Torch Full Offline Bundle
+
+on: workflow_dispatch
+
+jobs:
+  download-all:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Torch and ALL Dependencies
+        run: |
+          mkdir packages
+          # 关键：不加 --no-deps，让 pip 自动抓取所有 nvidia-xxx 子包
+          pip download \
+            torch==2.11.0+cu130 \
+            torchvision==0.26.0+cu130 \
+            torchaudio==2.11.0+cu130 \
+            -d ./packages \
+            --index-url https://pytorch.org \
+            --platform manylinux2014_x86_64 \
+            --only-binary=:all: \
+            --python-version 311
+
+          # 查看下载结果（应该有几十个 nvidia- 开头的文件）
+          ls -lh ./packages
+
+      - name: Upload Full Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: torch-full-offline-bundle
+          path: ./packages/
+          retention-days: 1
