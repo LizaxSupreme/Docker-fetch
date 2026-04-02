@@ -11,11 +11,11 @@ jobs:
           mkdir packages
           # 关键：不加 --no-deps，让 pip 自动抓取所有 nvidia-xxx 子包
           pip download \
-            torch==2.11.0+cu130 \
-            torchvision==0.26.0+cu130 \
-            torchaudio==2.11.0+cu130 \
+            torch==2.11.0 \
+            torchvision==0.26.0 \
+            torchaudio==2.11.0 \
             -d ./packages \
-            --index-url https://pytorch.org \
+            --index-url https://download.pytorch.org/whl/cu130 \
             --platform manylinux_2_28_x86_64 \
             --only-binary=:all: \
             --python-version 311
