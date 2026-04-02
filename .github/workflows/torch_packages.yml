@@ -16,7 +16,7 @@ jobs:
             torchaudio==2.11.0+cu130 \
             -d ./packages \
             --index-url https://pytorch.org \
-            --platform manylinux2014_x86_64 \
+            --platform manylinux_2_28_x86_64 \
             --only-binary=:all: \
             --python-version 311
 
