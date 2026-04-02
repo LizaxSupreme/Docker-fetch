@@ -1,7 +1,7 @@
 name: PyTorch Linux Bundle Fetcher
 
 on: 
-  workflow_dispatch: # 允许手动点击运行
+  workflow_dispatch: 
 
 jobs:
   download-torch-bundle:
@@ -9,24 +9,20 @@ jobs:
     steps:
       - name: Download Linux WHL Bundle
         run: |
-          # 定义模拟浏览器的 User-Agent 以绕过 CDN 拦截
+          # 核心路径：https://pytorch.org
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
           
-          echo "Starting download from download.pytorch.org..."
+          echo "Starting downloads..."
 
-          # 1. 下载 Torch 2.11.0 (注意：%2B 代表文件名中的 +)
-          wget --user-agent="$UA" -O torch-2.11.0+cu130-cp311-cp311-linux_x86_64.whl \
-          "https://pytorch.org"
+          # 1. 下载 Torch (注意：域名/路径/文件名 之间都有 / 隔开)
+          wget --user-agent="$UA" -O torch-2.11.0+cu130-cp311-cp311-linux_x86_64.whl "https://pytorch.org/torch-2.11.0%2Bcu130-cp311-cp311-linux_x86_64.whl"
           
-          # 2. 下载 Torchaudio 2.11.0
-          wget --user-agent="$UA" -O torchaudio-2.11.0+cu130-cp311-cp311-linux_x86_64.whl \
-          "https://pytorch.org"
+          # 2. 下载 Torchaudio
+          wget --user-agent="$UA" -O torchaudio-2.11.0+cu130-cp311-cp311-linux_x86_64.whl "https://pytorch.org/torchaudio-2.11.0%2Bcu130-cp311-cp311-linux_x86_64.whl"
           
-          # 3. 下载 Torchvision 0.26.0
-          wget --user-agent="$UA" -O torchvision-0.26.0+cu130-cp311-cp311-linux_x86_64.whl \
-          "https://pytorch.org"
+          # 3. 下载 Torchvision
+          wget --user-agent="$UA" -O torchvision-0.26.0+cu130-cp311-cp311-linux_x86_64.whl "https://pytorch.org/torchvision-0.26.0%2Bcu130-cp311-cp311-linux_x86_64.whl"
 
-          # 验证文件大小：Torch 应该在 2GB 左右
           echo "Verifying file sizes..."
           ls -lh *.whl
 
