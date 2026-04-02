@@ -1,32 +1,29 @@
-name: PyTorch Linux Bundle Fetcher
+name: PyTorch Direct Downloader
 
 on: workflow_dispatch
 
 jobs:
-  download-torch-bundle:
+  download-bundle:
     runs-on: ubuntu-latest
     steps:
-      - name: Download Linux WHL Bundle
+      - name: Download WHL Files via Direct URL
         run: |
-          # 使用 pip download 自动处理版本匹配和依赖地址
-          # 这样能确保下到的是真正的 .whl 文件（几GB大小），而不是 HTML 网页
-          pip download \
-            torch==2.11.0+cu130 \
-            torchaudio==2.11.0+cu130 \
-            torchvision==0.26.0+cu130 \
-            -d ./ \
-            --index-url https://pytorch.org \
-            --platform manylinux2014_x86_64 \
-            --only-binary=:all: \
-            --python-version 311 \
-            --no-deps # 仅下载这三个大包，其他小包你在 Windows 下发
+          # 使用强制转义的 URL 下载真正的 Linux .whl 文件
+          # 1. Torch 2.11.0 (约 2GB)
+          wget -O torch-2.11.0+cu130-cp311-cp311-linux_x86_64.whl "https://pytorch.org"
+          
+          # 2. Torchaudio 2.11.0
+          wget -O torchaudio-2.11.0+cu130-cp311-cp311-linux_x86_64.whl "https://pytorch.org"
+          
+          # 3. Torchvision 0.26.0
+          wget -O torchvision-0.26.0+cu130-cp311-cp311-linux_x86_64.whl "https://pytorch.org"
 
-          # 确认文件大小（正确的应该是几百MB到2GB）
+          # 验证文件大小 (必须是几百 MB 或 GB 级别)
           ls -lh *.whl
 
-      - name: Upload Bundle to Artifacts
+      - name: Upload Bundle
         uses: actions/upload-artifact@v4
         with:
           name: pytorch-linux-bundle
-          path: "./*.whl"
+          path: ./*.whl
           retention-days: 1
