@@ -1,0 +1,28 @@
+name: PyTorch Linux Bundle Fetcher
+
+on: workflow_dispatch
+
+jobs:
+  download-torch-bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Linux WHL Bundle
+        run: |
+          # 1. 下载 Torch 2.11.0
+          wget https://pytorch.org
+          
+          # 2. 下载 Torchaudio 2.11.0
+          wget https://pytorch.org
+          
+          # 3. 下载 Torchvision 0.26.0
+          wget https://pytorch.org
+
+      - name: Upload Bundle to Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytorch-linux-bundle
+          path: |
+            torch-*.whl
+            torchaudio-*.whl
+            torchvision-*.whl
+          retention-days: 1
