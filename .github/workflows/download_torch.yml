@@ -12,7 +12,8 @@ jobs:
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
           REF="https://pytorch.org"
           
-          # 1. 下载 Torch (注意：+ 号必须写成 %2B 才能在 URL 中被识别)
+          # 确保 URL 格式正确：https://pytorch.org文件名
+          # 1. 下载 Torch (约 2GB)
           wget --user-agent="$UA" --referer="$REF" -O torch-2.11.0+cu130-cp311-cp311-linux_x86_64.whl "https://pytorch.orgtorch-2.11.0%2Bcu130-cp311-cp311-linux_x86_64.whl"
           
           # 2. 下载 Torchaudio
@@ -21,7 +22,7 @@ jobs:
           # 3. 下载 Torchvision
           wget --user-agent="$UA" --referer="$REF" -O torchvision-0.26.0+cu130-cp311-cp311-linux_x86_64.whl "https://pytorch.orgtorchvision-0.26.0%2Bcu130-cp311-cp311-linux_x86_64.whl"
 
-          # 验证文件大小 (torch 应该在 2GB 左右)
+          # 验证文件大小
           ls -lh *.whl
 
       - name: Upload Bundle
