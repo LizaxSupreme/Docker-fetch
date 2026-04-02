@@ -6,21 +6,34 @@ jobs:
   download-all:
     runs-on: ubuntu-latest
     steps:
-      - name: Download Torch and ALL Dependencies
+      - name: Download Torch and Dependencies
         run: |
           mkdir packages
-          # 关键：不加 --no-deps，让 pip 自动抓取所有 nvidia-xxx 子包
+          # 1. 先强制下载核心大包（从 PyTorch 专用源）
           pip download \
             torch==2.11.0+cu130 \
             torchvision==0.26.0+cu130 \
             torchaudio==2.11.0+cu130 \
             -d ./packages \
-            --extra-index-url https://download.pytorch.org/whl/cu130 \
+            --index-url https://download.pytorch.org/whl/cu130 \
             --platform manylinux_2_28_x86_64 \
             --only-binary=:all: \
             --python-version 311
 
-          # 查看下载结果（应该有几十个 nvidia- 开头的文件）
+          # 2. 再强制从 PyPI 补全 nvidia 系列子包（针对 CUDA 13）
+          # 不指定 index-url，让它默认去 pypi.org 找你提到的 nvidia-cudnn-cu13
+          pip download \
+            nvidia-cudnn-cu13==9.19.0.56 \
+            nvidia-cublas-cu13 \
+            nvidia-cuda-runtime-cu13 \
+            nvidia-cuda-nvrtc-cu13 \
+            -d ./packages \
+            --platform manylinux2_28_x86_64 \
+            --only-binary=:all: \
+            --python-version 311 \
+            --trusted-host pypi.org
+
+          # 验证：检查是否集齐了这几十个文件
           ls -lh ./packages
 
       - name: Upload Full Bundle
@@ -28,4 +41,3 @@ jobs:
         with:
           name: torch-full-offline-bundle
           path: ./packages/
-          retention-days: 1
