@@ -15,7 +15,7 @@ jobs:
             torchvision==0.26.0 \
             torchaudio==2.11.0 \
             -d ./packages \
-            --index-url https://download.pytorch.org/whl/cu130 \
+            --extra-index-url https://download.pytorch.org/whl/cu130 \
             --platform manylinux_2_28_x86_64 \
             --only-binary=:all: \
             --python-version 311
